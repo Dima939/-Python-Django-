@@ -1,6 +1,8 @@
 import string, random
 from django.shortcuts import render
 from django.views import generic
+from django.contrib.auth.models import User
+from .models import Link
 
 
 numb_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
@@ -15,8 +17,23 @@ class HomeView(generic.View):
 
     def post(self, request):
         if request.POST.get('link'):
+            user = User.objects.get(id=request.POST.get('pk'))
             link = request.POST.get('link')
             own_key = 'http://yourdomain/' + ''.join([random.choice(random.choice(choice_list)) for i in range(6)])
+            user.link_set.create(content=link, short_content=own_key)
             return render(request, 'home.html', {'own_key': own_key, 'link': link})
         else:
             return render(request, 'home.html', {'help_text': 'Введите ссылку'})
+
+
+class LinksView(generic.View):
+    def get(self, request, id):
+        user = User.objects.get(id=id)
+        return render(request, 'links.html', {'links': user.link_set.all()})
+
+    def post(self, request, id):
+        user = User.objects.get(id=id)
+        link = Link.objects.get(id=request.POST.get('pk'))
+        link.delete()
+        return render(request, 'links.html', {'links': user.link_set.all()})
+

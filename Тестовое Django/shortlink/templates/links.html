@@ -6,22 +6,20 @@
 </head>
 <body>
     <div class="content">
-        <div class="links">
-            <a href="{% url 'logout' %}">Выход</a>
-            <a href="/links/{{user.id}}/">Все ссылки</a>
+        <a href="/home/">Назад</a>
+        {% if links %}
+        {% for link in links %}
+        <div class="link">
+            <a href="{{link.content}}" target="_blank">{{link.short_content}}</a>
+            <form method="post">
+                {% csrf_token %}
+                <input type="submit" value="Удалить" class="btn">
+                <input type="text" value="{{link.id}}" style="display: none;" name="pk">
+            </form>
         </div>
-        <h1>Добро пожаловать, {{user.username}}</h1>
-        <form method="post">
-            {% csrf_token %}
-            <label>Введите ссылку: </label>
-            <input type="text" name="link" style="width: 50%;"><br/>
-            <input type="submit" value="Сократить" class="btn">
-            <input type="text" name="pk" value="{{user.id}}" style="display: none;">
-        </form>
-        {% if link %}
-        <a href="{{link}}" target="_blank" class="own_link">{{own_key}}</a>
+        {% endfor %}
         {% else %}
-        <p>{{help_text}}</p>
+        <p>Нет ссылок</p>
         {% endif %}
     </div>
 </body>
@@ -29,15 +27,6 @@
     body{
         font-size: 20px;
         color: #303030;
-    }
-    .links{
-        display: flex;
-        justify-content: space-around;
-        margin: 0 auto;
-        width: 50%;
-    }
-    h1{
-        font-size: 2rem;
     }
     a{
         text-decoration: none;
@@ -56,8 +45,14 @@
         padding: 1.5rem;
         text-align: center;
     }
+    .link{
+        margin: 2rem auto;
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        width: 60%;
+    }
     .btn{
-        margin: 2rem 0 1rem;
         padding: 0.3rem 1rem;
         background-color: #F0F0F0;
         border: 0.15rem solid #303030;
