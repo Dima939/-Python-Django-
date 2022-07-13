@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shortlink</title>
+</head>
+<body>
+    <div class="content">
+        <a href="{% url 'login' %}">Вход</a>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Зарегистрироваться" class="btn">
+        </form>
+    </div>
+</body>
+<style>
+    body{
+        font-size: 20px;
+        color: #303030;
+    }
+    a{
+        text-decoration: none;
+        color: #303030;
+        transition: 0.2s linear;
+    }
+    a:hover{
+        color: #888888;
+    }
+    .content{
+        background: #F0F0F0;
+        border: 0.2rem solid #303030;
+        border-radius: 30%;
+        width: 50%;
+        margin: 5rem auto 0;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    .btn{
+        padding: 0.3rem 1rem;
+        background-color: #F0F0F0;
+        border: 0.15rem solid #303030;
+        font-weight: boold;
+        cursor: pointer;
+        transition: 0.2s linear;
+    }
+    .btn:hover{
+        color: #F0F0F0;
+        background-color: #303030;
+    }
+</style>
+</html>
